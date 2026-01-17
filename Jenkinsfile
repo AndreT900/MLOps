@@ -20,18 +20,19 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    echo 'Running Quick Test...'
-                    // Avvia un container di test temporaneo
-                    sh "docker run -d -p 5001:5000 --name test-model ${IMAGE_NAME}:latest"
-                    sleep 10 // Aspetta che parta
+                    echo '🧪 Testing...'
+                    // Lancia un container di test
+                    // Nota: Usiamo --network per far parlare Jenkins col container usando il nome DNS
+                    sh "docker run -d --name test-model --network sentiment-analysis_devops-network ${IMAGE_NAME}:latest"
+                    sleep 10 
                     
-                    // Controlla se risponde (se fallisce, la pipeline si ferma)
-                    sh "curl --fail http://localhost:5001/metrics || exit 1"
+                    // Verifica che risponda su /metrics (più sicuro di /health)
+                    // Nota: "test-model" è il nome del container, 5000 è la porta interna
+                    sh "curl --fail http://test-model:5000/metrics"
                 }
             }
             post {
                 always {
-                    // Rimuovi il container di test comunque vada
                     sh "docker rm -f test-model"
                 }
             }
