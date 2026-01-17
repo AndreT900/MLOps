@@ -1,0 +1,6 @@
+flask
+prometheus-flask-exporter
+scikit-learn
+pandas
+numpy
+gunicorn
