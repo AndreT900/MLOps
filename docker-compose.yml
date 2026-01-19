@@ -55,3 +55,4 @@ volumes:
 
 networks:
   devops-network:
+    name: monitoring-network
