@@ -29,6 +29,4 @@ htmlcov/
 .env
 .dockerignore
 
-# --- Project Specific ---
 grafana/
-
