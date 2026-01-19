@@ -30,9 +30,5 @@ htmlcov/
 .dockerignore
 
 # --- Project Specific ---
-# Grafana provisioning (come richiesto)
 grafana/
 
-# Dati / Modelli temporanei
-# Se volessi scaricare il modello fresco ogni volta, potresti scommentare:
-# sentimentanalysismodel.pkl

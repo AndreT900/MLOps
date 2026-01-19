@@ -6,18 +6,12 @@ from prometheus_client import Counter, Histogram
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 
-# --- NUOVE METRICHE PERSONALIZZATE ---
-
-# 1. Contatore per la distribuzione delle classi (Drift)
-# Labels: 'sentiment' ci permetterà di filtrare per positivo/negativo in Grafana
 sentiment_counter = Counter(
     'model_predictions_total', 
     'Totale previsioni per tipo di sentimento', 
     ['sentiment']
 )
 
-# 2. Istogramma per la lunghezza del testo (Data Quality)
-# Buckets definisce le fasce di lunghezza (es. 0-50 caratteri, 50-100, ecc.)
 review_length_histogram = Histogram(
     'review_length_chars', 
     'Lunghezza delle recensioni in caratteri',
@@ -43,20 +37,18 @@ def predict():
 
     if not review:
         return jsonify({'error': 'Testo vuoto'}), 400
-
-    # --- REGISTRAZIONE METRICHE ---
+ì
     
     # Registra la lunghezza del testo
     review_length_histogram.observe(len(review))
 
     try:
         prediction = model.predict([review])
-        result = prediction[0] # Es: "positive"
+        result = prediction[0] 
         
         # Calcolo Confidence
         confidence = 0.0
         if hasattr(model, 'predict_proba'):
-            # Restituisce array di probabilità (es. [[0.1, 0.9]])
             probas = model.predict_proba([review])[0]
             confidence = float(max(probas))
         
@@ -75,12 +67,11 @@ def predict():
 feedback_counter = Counter(
     'model_feedback_total',
     'Feedback utente sulla correttezza',
-    ['correct'] # 'true' o 'false'
+    ['correct'] 
 )
 
 @app.route('/feedback', methods=['POST'])
 def feedback():
-    # L'utente invia: {"correct": true} se ci abbiamo azzeccato
     data = request.get_json()
     is_correct = str(data.get('correct', 'false')).lower()
     

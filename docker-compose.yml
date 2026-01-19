@@ -1,5 +1,4 @@
 services:
-  # 1. La tua Applicazione Python
   sentiment-app:
     build: .
     image: sentiment-analyzer:latest
@@ -10,7 +9,6 @@ services:
       - devops-network
     restart: always
 
-  # 2. Prometheus (Raccoglie i dati)
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -21,7 +19,6 @@ services:
     networks:
       - devops-network
 
-  # 3. Grafana (Visualizza i grafici)
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -34,19 +31,17 @@ services:
     depends_on:
       - prometheus
 
-  # 4. Jenkins (Automatizza il tutto)
   jenkins:
     build:
       context: .
       dockerfile: Dockerfile.jenkins
     container_name: jenkins
-    user: root # NECESSARIO: dà a Jenkins i permessi per usare Docker
+    user: root
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_data:/var/jenkins_home
-      # Questo "buco" permette a Jenkins di vedere il Docker del tuo PC
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - devops-network
