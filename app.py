@@ -53,12 +53,19 @@ def predict():
         prediction = model.predict([review])
         result = prediction[0] # Es: "positive"
         
+        # Calcolo Confidence
+        confidence = 0.0
+        if hasattr(model, 'predict_proba'):
+            # Restituisce array di probabilità (es. [[0.1, 0.9]])
+            probas = model.predict_proba([review])[0]
+            confidence = float(max(probas))
+        
         # Registra quale sentimento è stato predetto
         sentiment_counter.labels(sentiment=result).inc()
 
         return jsonify({
             'sentiment': result,
-            'review_length': len(review)
+            'confidence': round(confidence, 2)
         })
 
     except Exception as e:

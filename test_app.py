@@ -25,4 +25,8 @@ def test_predict_basic(client):
     # Nota: Senza il file .pkl nel contesto del test, app.py potrebbe restituire errore 500 o 'Modello non disponibile'
     # Questo test verifica comunque che l'API risponda
     rv = client.post('/predict', json={'review': 'I love this product'})
-    assert rv.status_code in [200, 500] 
+    assert rv.status_code in [200, 500]
+    if rv.status_code == 200:
+        json_data = rv.get_json()
+        assert 'sentiment' in json_data
+        assert 'confidence' in json_data
