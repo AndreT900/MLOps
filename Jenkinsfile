@@ -5,7 +5,7 @@ pipeline {
         pollSCM('H/2 * * * *')
     }
 
-    agent any
+
 
     environment {
         IMAGE_NAME = "sentiment-analyzer"
