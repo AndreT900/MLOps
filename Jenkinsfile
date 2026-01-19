@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    triggers {
+        // Controlla GitHub ogni 2 minuti per vedere se ci sono modifiche
+        pollSCM('H/2 * * * *')
+    }
+
     environment {
         // Nome dell'immagine che creeremo
         IMAGE_NAME = "sentiment-analyzer"

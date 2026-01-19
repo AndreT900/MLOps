@@ -1,0 +1,6 @@
+FROM jenkins/jenkins:lts
+USER root
+# Install Docker CLI to allow Jenkins to run docker commands via the mounted socket
+RUN apt-get update && apt-get install -y docker.io
+# Switch back to jenkins user
+USER jenkins
