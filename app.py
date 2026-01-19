@@ -37,7 +37,7 @@ def predict():
 
     if not review:
         return jsonify({'error': 'Testo vuoto'}), 400
-ì
+
     
     # Registra la lunghezza del testo
     review_length_histogram.observe(len(review))
